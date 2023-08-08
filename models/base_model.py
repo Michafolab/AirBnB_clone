@@ -2,8 +2,9 @@
 """
 A base model module for the airbnb project
 """
-import uuid 
+import uuid
 from datetime import datetime
+import copy
 
 
 class BaseModel:
@@ -32,8 +33,14 @@ class BaseModel:
         self.updated_at = datetime.now()
 
     def to_dict(self):
-        dict_to_return = self.__dict__
-        dict_to_return["__class__"] =  self.__class__.__name__
+        """
+        returns the dictionary representation
+        of the instance with the class name where it is
+        derived added and created_at, updated_at atributes
+        have been converted to iso format
+        """
+        dict_to_return = copy.deepcopy(self.__dict__)
+        dict_to_return["__class__"] = self.__class__.__name__
         dict_to_return["created_at"] = self.created_at.isoformat()
         dict_to_return["updated_at"] = self.updated_at.isoformat()
         return dict_to_return
