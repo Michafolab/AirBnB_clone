@@ -15,6 +15,8 @@ class TestBaseClass(unittest.TestCase):
         Sets up all values for each test case
         """
         self.my_model = BaseModel()
+        self.my_model.number = 89
+        self.my_model.name = "Fancy_Model"
 
     def tearDown(self):
         """
@@ -85,9 +87,69 @@ class TestBaseClass(unittest.TestCase):
         """
         self.assertIsNotNone(base.__doc__)
         self.assertIsNotNone(BaseModel.__doc__)
+        self.assertIsNotNone(BaseModel.__init__.__doc__)
         self.assertIsNotNone(BaseModel.__str__.__doc__)
         self.assertIsNotNone(BaseModel.save.__doc__)
         self.assertIsNotNone(BaseModel.to_dict.__doc__)
+
+    def test_instance_clone(self):
+        """
+        checks if i successfully created a new instance
+        from the dictionary representation of a former instance
+        """
+        my_model_dict = self.my_model.to_dict()
+        new_model = BaseModel(**my_model_dict)
+
+        # ----- Assertions -----
+        self.assertIsNotNone(new_model)
+        self.test_attr_type()
+
+    def test_instance_clone_instance_type(self):
+        """
+        checks if after the cloning from a dictionary object,
+        my created_at and updated_at string are converted to
+        a datetime instance
+        """
+        my_model_dict = self.my_model.to_dict()
+        new_model = BaseModel(**my_model_dict)
+
+        # ----- Assertions -----
+        self.assertIsInstance(new_model, BaseModel)
+        self.assertIsInstance(new_model.number, int)
+        self.assertIsInstance(new_model.name, str)
+        self.assertIsInstance(new_model.created_at, datetime.datetime)
+        self.assertIsInstance(new_model.updated_at, datetime.datetime)
+
+    def test_instance_clone_time_change(self):
+        """
+        checks if a new time is created after cloning or it uses
+        the time from the dict object
+        """
+        my_model_dict = self.my_model.to_dict()
+        new_model = BaseModel(**my_model_dict)
+
+        self.assertEqual(self.my_model.created_at, new_model.created_at)
+        self.assertEqual(self.my_model.updated_at, new_model.updated_at)
+
+    def test_instance_clone_id(self):
+        """
+        checks if the cloned instances are the same
+        by id
+        """
+        my_model_dict = self.my_model.to_dict()
+        new_model = BaseModel(**my_model_dict)
+
+        self.assertNotEqual(id(self.my_model), id(new_model))
+
+    def test_instance_clone_same(self):
+        """
+        checks if the instance and the instance clone are the
+        same using the is operator
+        """
+        my_model_dict = self.my_model.to_dict()
+        new_model = BaseModel(**my_model_dict)
+
+        self.assertFalse(self.my_model is new_model)
 
 
 if __name__ == '__main__':
