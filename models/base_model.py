@@ -5,6 +5,7 @@ A base model module for the airbnb project
 import uuid
 from datetime import datetime
 import copy
+from . import storage
 
 
 class BaseModel:
@@ -27,6 +28,7 @@ class BaseModel:
         else:
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
+            storage.new(self)
 
     def __str__(self):
         """
@@ -37,8 +39,11 @@ class BaseModel:
     def save(self):
         """
         updates the object created from the class
+        and saves the data/status to a file or any
+        other storage system
         """
         self.updated_at = datetime.now()
+        storage.save()
 
     def to_dict(self):
         """
