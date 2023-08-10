@@ -17,5 +17,5 @@ class TestUserClass(unittest.TestCase):
         check if all functions and class and the module
         itself is documented
         """
-        self.assertNotNone(user.__doc__)
-        self.assertNotNone(User.__doc__)
+        self.assertIsNotNone(user.__doc__)
+        self.assertIsNotNone(User.__doc__)
