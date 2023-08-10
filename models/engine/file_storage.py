@@ -10,7 +10,8 @@ class FileStorage:
     """
     A FileStorage class:
         handles serializations to a file for our engine and
-        deserialization for the application engine. AirBnB
+        deserialization for the application engine. AirBnB Clone
+        Project
     """
     __file_path = 'file.json'
     __objects = {}
