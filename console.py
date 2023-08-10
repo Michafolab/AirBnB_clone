@@ -7,6 +7,7 @@ for managing the state of our application
 import cmd
 import shlex
 from models.base_model import BaseModel
+from models.user import User
 from models import storage
 
 
@@ -16,6 +17,7 @@ class HBNBCommand(cmd.Cmd):
     our application
     """
     prompt = "(hbnb) "
+    models = {'BaseModel': BaseModel, 'User': User}
 
     def do_quit(self, line):
         """
@@ -23,7 +25,7 @@ class HBNBCommand(cmd.Cmd):
         Usage:
             (hbnb) quit
         """
-        return True;
+        return True
 
     def do_EOF(self, line):
         """
@@ -48,14 +50,14 @@ class HBNBCommand(cmd.Cmd):
         if not line:
             print("** class name missing **")
 
-        elif line not in ["BaseModel"]:
+        elif line not in HBNBCommand.models.keys():
             print("** class doesn't exist **")
 
         else:
 
             # ----- create a new instance of the class -----
             # ----- stated and save to a file -----
-            new_model = BaseModel()
+            new_model = HBNBCommand.models[line]()
             new_model.save()
             print(new_model.id)
 
@@ -72,7 +74,7 @@ class HBNBCommand(cmd.Cmd):
         try:
 
             classname = line[0]
-            if classname not in ["BaseModel"]:
+            if classname not in HBNBCommand.models.keys():
                 print("** class doesn't exist **")
                 return
 
@@ -109,7 +111,7 @@ class HBNBCommand(cmd.Cmd):
         try:
 
             classname = line[0]
-            if classname not in ["BaseModel"]:
+            if classname not in HBNBCommand.models.keys():
 
                 print("** class doesn't exist **")
                 return
@@ -150,7 +152,7 @@ class HBNBCommand(cmd.Cmd):
                     It will list instances belonging to the specified
                     class name
         """
-        if line and line not in ["BaseModel"]:
+        if line and line not in HBNBCommand.models.keys():
 
             print("** class doesn't exist **")
             return
@@ -187,12 +189,11 @@ class HBNBCommand(cmd.Cmd):
                   3: "** value missing **"}
 
         arg_idx = ["class_name", "instance_id", "attr_name",
-                     "attr_value"]
+                   "attr_value"]
 
         arguments = {"class_name": "", "instance_id": "",
                      "attr_name": "", "attr_value": ""}
 
-        models = ["BaseModel"]
         line = shlex.split(line)
 
         # ----- check if all neccesary arguments are given -----
@@ -202,10 +203,11 @@ class HBNBCommand(cmd.Cmd):
 
                 arguments[arg_idx[i]] = line[i]
                 # ----- checks if the class name given is valid -----
-                if i == 0 and arguments[arg_idx[0]] not in models:
+                if i == 0:
 
-                    print("** class doesn't exist **")
-                    return
+                    if arguments[arg_idx[0]] not in HBNBCommand.models.keys():
+                        print("** class doesn't exist **")
+                        return
 
                 # ----- checks if the inst id given is valid -----
                 if i == 1:
@@ -250,6 +252,7 @@ def check_instance_id(class_name, instance_id):
 
         print("** no instance found **")
         return False
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()

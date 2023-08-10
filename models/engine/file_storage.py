@@ -44,10 +44,13 @@ class FileStorage:
         the __file_path private class variable
         """
         with open(FileStorage.__file_path, 'w') as f:
+
             obj = {}
             obj.update(FileStorage.__objects)
+
             for key, value in FileStorage.__objects.items():
                 obj[key] = value.to_dict()
+
             f.write(json.dumps(obj))
 
     def reload(self):
@@ -55,10 +58,18 @@ class FileStorage:
         deserializes the JSON file back to the __objects variable
         """
         from models.base_model import BaseModel
+        from models.user import User
+        models = {'BaseModel': BaseModel, 'User': User}
+
         try:
+
             with open(FileStorage.__file_path, 'r') as f:
+
                 content = json.loads(f.read())
+
                 for key, value in content.items():
-                    FileStorage.__objects[key] = BaseModel(**value)
+                    class_name = value['__class__']
+                    FileStorage.__objects[key] = models[class_name](**value)
+
         except FileNotFoundError:
             pass
