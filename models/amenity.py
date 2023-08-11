@@ -1,10 +1,16 @@
 #!/usr/bin/python3
 """
-Defines amenities
+A module that handles all the logic and data that has to do with
+the amenities for our app that each location has.
 """
 from models.base_model import BaseModel
 
 
 class Amenity(BaseModel):
-    """Defines amenities that user can choose from to offer at its place"""
+    """
+    Amenity class that handles the amenities each location
+    in our application has.
+    attributes:
+        name: the name of the amenity
+    """
     name = ""
