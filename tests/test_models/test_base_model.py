@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
+"""
+Testing module for the BaseModel Class
+"""
 import unittest
 import models.base_model as base
 import datetime
 import uuid
-
-
 BaseModel = base.BaseModel
+
+
 class TestBaseClass(unittest.TestCase):
     """
     TestBaseClass: - : A class to test my BaseModel class

@@ -1,18 +1,24 @@
 #!/usr/bin/python3
 """
-Defines Place class
+A module that brings together all other classes like
+{City}, {State}, {Amenity} to define a particular place
+or location in our application
 """
 from models.base_model import BaseModel
 
 
 class Place(BaseModel):
-    """Defines Place class"""
+    """
+    Place class:
+        handles the collection of data for each location or
+        place or home in our application
+    """
     city_id = ""
     user_id = ""
     name = ""
     description = ""
-    number_bathrooms = 0
     number_rooms = 0
+    number_bathrooms = 0
     max_guest = 0
     price_by_night = 0
     latitude = 0.0
