@@ -30,23 +30,35 @@ class HBNBCommand(cmd.Cmd):
 
     def onecmd(self, line):
         """
-        one cmd
+        Base class {cmd.Cmd} method {onecmd} that has been overridden to add
+        some modifications
         """
         m = re.search('(\w+).(\w+)\((.+)?\)', line)
 
         if m is not None:
-#            print(m.group(0))
- #           print(m.group(1))
-  #          print(m.group(2))
-   #         print(m.group(3))
+
             command = m.group(2)
             modelname = m.group(1)
             arguments = m.group(3)
+            argL = []
+
             if arguments == None:
                 newarg = command + ' ' + modelname
+
             else:
-                newarg = command + ' ' + modelname + ' ' + arguments
-            cmd.Cmd.onecmd(self, newarg)
+                newarg = command + ' ' + modelname
+                arguments = arguments.split(', ')
+
+                # ----- remove the double quotes they have -----
+                for arg in arguments:
+                    argL.append(arg.split('\"')[1])
+                # ----- add each arguments to the new argument that -----
+                # ----- will be passed to onecmd -----
+                for arg in argL:
+                    newarg = newarg + ' ' + arg
+            # ----- finally call one cmd -----
+            if cmd.Cmd.onecmd(self, newarg):
+                return True
 
         else:
             if cmd.Cmd.onecmd(self, line):
