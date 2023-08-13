@@ -42,7 +42,7 @@ class HBNBCommand(cmd.Cmd):
             arguments = m.group(3)
             argL = []
 
-            if arguments == None:
+            if arguments is None:
                 newarg = command + ' ' + modelname
 
             else:
@@ -50,12 +50,13 @@ class HBNBCommand(cmd.Cmd):
 
                 arguments = arguments.split(', ')
 
-
-
                 """
-                This section works on the argument if the command to execute is update
-                and if it is passed an argument of dictionary to work on. i.e: If you
-                want to update your instance using a dictionary directly instead of a
+                This section works on the argument if the
+                command to execute is update
+                and if it is passed an argument of
+                dictionary to work on. i.e: If you
+                want to update your instance using
+                a dictionary directly instead of a
                 string based approach:
                 Example:
                     (hbnb) User.update("ea61d516-e30f-49bf-aff7-24d66652de03",
@@ -65,25 +66,36 @@ class HBNBCommand(cmd.Cmd):
                     # ----- check if a dictionary is passed -----
                     clean_exit = False
                     if arguments[1][0] == '{':
+
                         dict_values = self.parse_dict(arguments[1:])
                         instance_id = self.remove_quotation(arguments[0])
                         newarg = newarg + ' ' + arguments[0]
+
                         for dict_v in dict_values:
+
                             for arc in dict_v:
                                 newarg = newarg + ' ' + arc
+
                             if cmd.Cmd.onecmd(self, newarg):
                                 clean_exit = True
-                            newarg = command + ' ' + modelname + ' ' + instance_id
+
+                            newarg = command + ' ' + modelname + \
+                                ' ' + instance_id
+
                         if clean_exit:
                             return True
                         return
                 """
-                This section is for other commands if the command given is not an update
-                command with a dictionary as argument, It woks with update commands also
-                provided that it doesn't have a dictionary as it's argument,
+                This section is for other commands if
+                the command given is not an update
+                command with a dictionary as argument,
+                It woks with update commands also
+                provided that it doesn't have a
+                dictionary as it's argument,
                 Example:
                     (hbnb) User.show(instance_id)
-                    (hbnb) BaseModel.update("instance_id", "attr_name", "attr_value")
+                    (hbnb) BaseModel.update("instance_id",
+                    "attr_name", "attr_value")
                 """
                 for arg in arguments:
                     argL.append(self.remove_quotation(arg))
@@ -110,6 +122,7 @@ class HBNBCommand(cmd.Cmd):
 
         for unit in dict_arg:
             dict_str += unit + ', '
+
         # ----- remove the last command and space in the string -----
         dict_str = dict_str[:-2]
         # ----- remove both opening and closing brackets -----
@@ -117,27 +130,32 @@ class HBNBCommand(cmd.Cmd):
         # ----- split each argument i.e: name: tunde, age: 24 -----
         # -----it splits it into a list of name: tunde -----
         # ----- and age: 24 -----
-                        
+
         dict_L = dict_str.split(', ')
         temp_dict_L = []
 
         for dict_unit in dict_L:
+
             split = dict_unit.split(':')
             temp_dict_L.append(split)
 
-
         dict_L = []
         temp_dict = []
+
         for dict_list in temp_dict_L:
+
             for dict_unit in dict_list:
+
                 if dict_unit[0] == ' ':
+
                     # ----- remove spaces -----
                     dict_unit = dict_unit[1:]
                 temp_dict.append(self.remove_quotation(dict_unit))
+
             dict_L.append(temp_dict)
+
             temp_dict = []
         return dict_L
-
 
     def remove_quotation(self, string):
         """
@@ -147,7 +165,6 @@ class HBNBCommand(cmd.Cmd):
         if string[0] == '\'' or string[0] == '\"':
             string = string[1:-1]
         return string
- 
 
     def do_quit(self, line):
         """
@@ -369,7 +386,7 @@ class HBNBCommand(cmd.Cmd):
 
                     class_name = arguments[arg_idx[0]]
                     instance_id = arguments[arg_idx[1]]
-                    if not check_instance_id(class_name, instance_id):
+                    if not self.check_instance_id(class_name, instance_id):
                         return
 
             except IndexError:
@@ -392,8 +409,36 @@ class HBNBCommand(cmd.Cmd):
         setattr(to_update, arguments["attr_name"], attr_value)
         storage.save()
 
+    def check_instance_id(class_name, instance_id):
+        """
+        checks if the instance id given as argument is valid
+        """
+        full_search_t = f"{class_name}.{instance_id}"
+        storage.reload()
+        inst_object = storage.all()
+        # ----- check if the id arg given is valid -----
+        try:
+
+            inst_object[full_search_t]
+            return True
+
+        except KeyError:
+
+            print("** no instance found **")
+            return False
+
 
 def check_instance_id(class_name, instance_id):
+    """
+    checks if the instance id given as argument is valid.
+    I left this same function as the method in the HBNBCommand
+    class because this was where it was before I moved it as a
+    method, I might have associated some code with this function
+    and I don't want to break my code so I left this here.
+    As time comes I will keep checking my codebase to see
+    where else I am using this function in order to change it's
+    use to the method in the HBNBCommand class
+    """
     full_search_t = f"{class_name}.{instance_id}"
     storage.reload()
     inst_object = storage.all()
