@@ -37,6 +37,30 @@ class TestFileStorage(unittest.TestCase):
         """
         self.assertIsNotNone(self.my_model)
 
+    def test_reload(self):
+        """
+        Tests the eload function
+        """
+        pass
+
+    def test_save(self):
+        """
+        tests the save function
+        """
+        pass
+
+    def test_new(self):
+        """
+        tests the new function
+        """
+        pass
+
+    def test_all(self):
+        """
+        tests the all function
+        """
+        pass
+
     def test_documentation(self):
         """
         checks if the module and all functions and
