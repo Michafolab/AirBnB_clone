@@ -47,15 +47,52 @@ class HBNBCommand(cmd.Cmd):
 
             else:
                 newarg = command + ' ' + modelname
+
                 arguments = arguments.split(', ')
 
-                # ----- remove the double quotes they have -----
+
+
+                """
+                This section works on the argument if the command to execute is update
+                and if it is passed an argument of dictionary to work on. i.e: If you
+                want to update your instance using a dictionary directly instead of a
+                string based approach:
+                Example:
+                    (hbnb) User.update("ea61d516-e30f-49bf-aff7-24d66652de03",
+                            {'first_name': "John", "age": 89})
+                """
+                if command == 'update':
+                    # ----- check if a dictionary is passed -----
+                    clean_exit = False
+                    if arguments[1][0] == '{':
+                        dict_values = self.parse_dict(arguments[1:])
+                        instance_id = self.remove_quotation(arguments[0])
+                        newarg = newarg + ' ' + arguments[0]
+                        for dict_v in dict_values:
+                            for arc in dict_v:
+                                newarg = newarg + ' ' + arc
+                            if cmd.Cmd.onecmd(self, newarg):
+                                clean_exit = True
+                            newarg = command + ' ' + modelname + ' ' + instance_id
+                        if clean_exit:
+                            return True
+                        return
+                """
+                This section is for other commands if the command given is not an update
+                command with a dictionary as argument, It woks with update commands also
+                provided that it doesn't have a dictionary as it's argument,
+                Example:
+                    (hbnb) User.show(instance_id)
+                    (hbnb) BaseModel.update("instance_id", "attr_name", "attr_value")
+                """
                 for arg in arguments:
-                    argL.append(arg.split('\"')[1])
+                    argL.append(self.remove_quotation(arg))
                 # ----- add each arguments to the new argument that -----
                 # ----- will be passed to onecmd -----
+
                 for arg in argL:
                     newarg = newarg + ' ' + arg
+
             # ----- finally call one cmd -----
             if cmd.Cmd.onecmd(self, newarg):
                 return True
@@ -63,6 +100,54 @@ class HBNBCommand(cmd.Cmd):
         else:
             if cmd.Cmd.onecmd(self, line):
                 return True
+
+    def parse_dict(self, dictionary):
+        """
+        parse an argument to the update command if it is a dictionary
+        """
+        dict_arg = dictionary
+        dict_str = ""
+
+        for unit in dict_arg:
+            dict_str += unit + ', '
+        # ----- remove the last command and space in the string -----
+        dict_str = dict_str[:-2]
+        # ----- remove both opening and closing brackets -----
+        dict_str = dict_str[1:-1]
+        # ----- split each argument i.e: name: tunde, age: 24 -----
+        # -----it splits it into a list of name: tunde -----
+        # ----- and age: 24 -----
+                        
+        dict_L = dict_str.split(', ')
+        temp_dict_L = []
+
+        for dict_unit in dict_L:
+            split = dict_unit.split(':')
+            temp_dict_L.append(split)
+
+
+        dict_L = []
+        temp_dict = []
+        for dict_list in temp_dict_L:
+            for dict_unit in dict_list:
+                if dict_unit[0] == ' ':
+                    # ----- remove spaces -----
+                    dict_unit = dict_unit[1:]
+                temp_dict.append(self.remove_quotation(dict_unit))
+            dict_L.append(temp_dict)
+            temp_dict = []
+        return dict_L
+
+
+    def remove_quotation(self, string):
+        """
+        remove quotes from arguments
+        """
+        # ----- remove the double quotes they have -----
+        if string[0] == '\'' or string[0] == '\"':
+            string = string[1:-1]
+        return string
+ 
 
     def do_quit(self, line):
         """
