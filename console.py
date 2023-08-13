@@ -409,7 +409,7 @@ class HBNBCommand(cmd.Cmd):
         setattr(to_update, arguments["attr_name"], attr_value)
         storage.save()
 
-    def check_instance_id(class_name, instance_id):
+    def check_instance_id(self, class_name, instance_id):
         """
         checks if the instance id given as argument is valid
         """
