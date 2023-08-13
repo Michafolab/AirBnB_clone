@@ -78,3 +78,23 @@ class TestConsole(unittest.TestCase):
             f.truncate()
             HBNBCommand().onecmd("BaseModel.all()")
             self.assertIsNotNone(f.getvalue())
+
+    def test_console_4(self):
+        """
+        tests for our application console
+        """
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create BaseModel")
+            instance_id = f.getvalue()
+            f.seek(0)
+            f.truncate()
+            # ----- remove the new line -----
+            instance_id = instance_id[:-1]
+            command = f"update BaseModel {instance_id}"
+            HBNBCommand().onecmd(command)
+            self.assertEqual(f.getvalue(), "** attribute name missing **\n")
+            f.seek(0)
+            f.truncate()
+            command = f"update BaseModel {instance_id} attr_name"
+            HBNBCommand().onecmd(command)
+            self.assertEqual(f.getvalue(), "** value missing **\n")
