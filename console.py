@@ -33,7 +33,7 @@ class HBNBCommand(cmd.Cmd):
         Base class {cmd.Cmd} method {onecmd} that has been overridden to add
         some modifications
         """
-        m = re.search('(\w+).(\w+)\((.+)?\)', line)
+        m = re.search(r'(\w+).(\w+)\((.+)?\)', line)
 
         if m is not None:
 
