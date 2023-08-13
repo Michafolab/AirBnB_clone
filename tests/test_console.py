@@ -115,3 +115,15 @@ class TestConsole(unittest.TestCase):
             self.assertIsNotNone(f.getvalue())
             HBNBCommand().onecmd("User.update(\"id\", \"attr_name\", \"attr_value\")")
             self.assertIsNotNone(f.getvalue())
+
+    def test_destroy(self):
+        """
+        unittest for the console
+        """
+        with patch('sys.stdout', new=StringIO()) as f:
+            command = ""
+            HBNBCommand().onecmd(command)
+
+
+if __name__ == '__main__':
+    unittest.main()
