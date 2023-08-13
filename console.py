@@ -35,10 +35,10 @@ class HBNBCommand(cmd.Cmd):
         m = re.search('(\w+).(\w+)\((.+)?\)', line)
 
         if m is not None:
-            print(m.group(0))
-            print(m.group(1))
-            print(m.group(2))
-            print(m.group(3))
+#            print(m.group(0))
+ #           print(m.group(1))
+  #          print(m.group(2))
+   #         print(m.group(3))
             command = m.group(2)
             modelname = m.group(1)
             arguments = m.group(3)
@@ -49,7 +49,6 @@ class HBNBCommand(cmd.Cmd):
             cmd.Cmd.onecmd(self, newarg)
 
         else:
-            print(m)
             if cmd.Cmd.onecmd(self, line):
                 return True
 
@@ -209,6 +208,31 @@ class HBNBCommand(cmd.Cmd):
 
         if to_print:
             print(to_print)
+
+    def do_count(self, line):
+        """
+        counts the amount of instance a given class has
+        """
+        if line and line not in HBNBCommand.models.keys():
+
+            print("** class doesn't exist **")
+            return
+
+        storage.reload()
+        inst_object = storage.all()
+        instances = []
+        if line:
+
+            for value in inst_object.values():
+
+                if value.__class__.__name__ == line:
+                    instances.append(str(value))
+
+        else:
+
+            for value in inst_object.values():
+                instances.append(str(value))
+        print(len(instances))
 
     def do_update(self, line):
         """
