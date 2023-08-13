@@ -53,7 +53,11 @@ class TestFileStorage(unittest.TestCase):
         """
         verifies that the FileStorage class has the neccesary attributes
         """
-        self.assertTrue(FileStorage.__file_path in FileStorage.__dict__)
+        self.assertEqual(FileStorage.__dict__['_FileStorage__file_path'], 'file.json')
+        self.assertIsNotNone(storage.all)
+        self.assertIsNotNone(storage.new)
+        self.assertIsNotNone(storage.save)
+        self.assertIsNotNone(storage.reload)
 
     def test_new(self):
         """
