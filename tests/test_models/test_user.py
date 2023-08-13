@@ -44,8 +44,8 @@ class TestUserClass(unittest.TestCase):
         """
         tests if the User class has a last_name attribute
         """
-        self.assertTrue(hasattr(User, "last_name"))
-        self.assertTrue(hasattr(self.user, "last_name"))
+        self.assertIsNotNone(User.last_name)
+        self.assertIsNotNone(self.user.last_name)
 
     def test_documentation(self):
         """
