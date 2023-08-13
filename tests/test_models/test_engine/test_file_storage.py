@@ -39,9 +39,9 @@ class TestFileStorage(unittest.TestCase):
 
     def test_reload(self):
         """
-        Tests the eload function
+        Tests the reload function
         """
-        pass
+        self.assertEqual(storage.reload(), None)
 
     def test_save(self):
         """
