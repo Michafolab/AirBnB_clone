@@ -6,6 +6,7 @@ for managing the state of our application
 """
 import cmd
 import shlex
+import re
 from models.base_model import BaseModel
 from models.user import User
 from models.place import Place
@@ -26,6 +27,31 @@ class HBNBCommand(cmd.Cmd):
               'Place': Place, 'State': State,
               'City': City, 'Amenity': Amenity,
               'Review': Review}
+
+    def onecmd(self, line):
+        """
+        one cmd
+        """
+        m = re.search('(\w+).(\w+)\((.+)?\)', line)
+
+        if m is not None:
+            print(m.group(0))
+            print(m.group(1))
+            print(m.group(2))
+            print(m.group(3))
+            command = m.group(2)
+            modelname = m.group(1)
+            arguments = m.group(3)
+            if arguments == None:
+                newarg = command + ' ' + modelname
+            else:
+                newarg = command + ' ' + modelname + ' ' + arguments
+            cmd.Cmd.onecmd(self, newarg)
+
+        else:
+            print(m)
+            if cmd.Cmd.onecmd(self, line):
+                return True
 
     def do_quit(self, line):
         """
