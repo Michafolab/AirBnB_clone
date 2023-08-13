@@ -107,3 +107,11 @@ class TestConsole(unittest.TestCase):
             command = "BaseModel.all()"
             HBNBCommand().onecmd(command)
             self.assertIsNotNone(f.getvalue())
+            HBNBCommand().onecmd("User.count()")
+            self.assertIsNotNone(f.getvalue())
+            HBNBCommand().onecmd("Amenities.show()")
+            self.assertIsNotNone(f.getvalue())
+            HBNBCommand().onecmd("User.destroy()")
+            self.assertIsNotNone(f.getvalue())
+            HBNBCommand().onecmd("User.update(\"id\", \"attr_name\", \"attr_value\")")
+            self.assertIsNotNone(f.getvalue())
