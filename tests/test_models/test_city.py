@@ -3,6 +3,7 @@
 testing module for the City class
 """
 import unittest
+from models.city import City
 
 
 class TestCityClass(unittest.TestCase):
@@ -13,4 +14,11 @@ class TestCityClass(unittest.TestCase):
         """
         sets up the configuration for each test case
         """
-        pass
+        self.city = City()
+
+    def test_attributes(self):
+        """
+        tests if the City class has the neccessary attributes
+        """
+        self.assertIsNotNone(self.city.state_id)
+        self.assertIsNotNone(self.city.name)

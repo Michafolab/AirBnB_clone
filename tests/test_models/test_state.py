@@ -3,6 +3,7 @@
 testing module for the State class
 """
 import unittest
+from models.state import State
 
 
 class TestStateClass(unittest.TestCase):
@@ -13,4 +14,10 @@ class TestStateClass(unittest.TestCase):
         """
         sets up the configuration for each test case
         """
-        pass
+        self.state = State()
+
+    def test_name(self):
+        """
+        tests if the State class has the name atrribute
+        """
+        self.assertIsNotNone(self.state.name)
