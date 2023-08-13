@@ -59,7 +59,7 @@ class TestFileStorage(unittest.TestCase):
         """
         tests the all function
         """
-        pass
+        self.assertIsNotNone(storage.all())
 
     def test_documentation(self):
         """
