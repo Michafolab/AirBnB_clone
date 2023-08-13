@@ -49,6 +49,12 @@ class TestFileStorage(unittest.TestCase):
         """
         pass
 
+    def test_attributes(self):
+        """
+        verifies that the FileStorage class has the neccesary attributes
+        """
+        self.assertTrue(FileStorage.__file_path in FileStorage.__dict__)
+
     def test_new(self):
         """
         tests the new function
