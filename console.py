@@ -4,6 +4,8 @@ The console module. This module contains all
 the files needed to run our console
 for managing the state of our application
 """
+
+
 import cmd
 import shlex
 import re
