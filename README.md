@@ -13,3 +13,10 @@ models and manipulate our storage system.
 ### The Console
 _We will get here. Development is still on the console_
 
+
+
+###Installation 🛠️
+Clone the repository and run the console.py
+
+$ git clone https://github.com/------/AirBnB_clone.git
+
